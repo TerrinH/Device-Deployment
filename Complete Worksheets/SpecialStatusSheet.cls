@@ -28,14 +28,7 @@ Private Sub Worksheet_Activate()
         'Here we specifically set the active cell to the first empty cell in column 1 (A).
         ThisWorkbook.SpecialStatusSheet.Range("A" & ThisWorkbook.SpecialStatusSheet.UsedRange.Rows.Count).End(xlUp).Offset(1, 0).Select
     End If
-    'Here we look up our column indexes for future use by the rest of the code on this sheet.
-    SerialColumn = ThisWorkbook.SheetColumnLookup("Unit Serial", False, ThisWorkbook.SpecialStatusSheet, False)
-    ModelColumn = ThisWorkbook.SheetColumnLookup("Unit Model", False, ThisWorkbook.SpecialStatusSheet, False)
-    CustomerColumn = ThisWorkbook.SheetColumnLookup("Customer", False, ThisWorkbook.SpecialStatusSheet, False)
-    StatusColumn = ThisWorkbook.SheetColumnLookup("Status", False, ThisWorkbook.SpecialStatusSheet, False)
-    LocationColumn = ThisWorkbook.SheetColumnLookup("Location", False, ThisWorkbook.SpecialStatusSheet, False)
-    DateColumn = ThisWorkbook.SheetColumnLookup("Date", False, ThisWorkbook.SpecialStatusSheet, False)
-    CommentColumn = ThisWorkbook.SheetColumnLookup("Comment", False, ThisWorkbook.SpecialStatusSheet, False)
+    Call UpdateColumnIndexes
 
 End Sub
 
@@ -45,7 +38,9 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     'Here we loop through all the changed cells and handle them individually, even if there's only 1.
     Dim TargetCell As Range
     For Each TargetCell In Target.Cells
-        If TargetCell Is Nothing Or TargetCell.Row = 1 Then
+        If TargetCell Is Nothing Then Exit Sub
+        If TargetCell.Row = 1 Then
+            Call UpdateColumnIndexes
             Exit Sub
         End If
         'Here we force all input to be uppercase.
@@ -70,6 +65,20 @@ Private Sub Worksheet_Change(ByVal Target As Range)
         DoEvents
     Next
     
+End Sub
+
+Private Sub UpdateColumnIndexes()
+    'When called will search for and update all tracked column indexes.
+    
+    'Critical column lookups that fail will be reported.
+    SerialColumn = ThisWorkbook.SheetColumnLookup("Unit Serial", False, ThisWorkbook.SpecialStatusSheet, False)
+    ModelColumn = ThisWorkbook.SheetColumnLookup("Unit Model", False, ThisWorkbook.SpecialStatusSheet, True)
+    CustomerColumn = ThisWorkbook.SheetColumnLookup("Customer", False, ThisWorkbook.SpecialStatusSheet, True)
+    StatusColumn = ThisWorkbook.SheetColumnLookup("Status", False, ThisWorkbook.SpecialStatusSheet, False)
+    LocationColumn = ThisWorkbook.SheetColumnLookup("Location", False, ThisWorkbook.SpecialStatusSheet, True)
+    DateColumn = ThisWorkbook.SheetColumnLookup("Date", False, ThisWorkbook.SpecialStatusSheet, True)
+    CommentColumn = ThisWorkbook.SheetColumnLookup("Comment", False, ThisWorkbook.SpecialStatusSheet, True)
+
 End Sub
 
 Private Sub SerialEvent(ByRef SerialCell As Range)
