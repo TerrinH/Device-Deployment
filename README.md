@@ -26,7 +26,7 @@ significant amounts of inactive data (shipped devices).
     the provided device serial number.
     
   - **Shipped**:
-    Once the preliminary quality control of the _Completed_ worksheet has been completed and the device is ready to be packaged in it
+    Once the preliminary quality control of the _Completed_ worksheet has been completed and the device is ready to be packaged in its
     shipping medium, it ends up here where we associate a shipping tracking number with the device.
   
   - **SETTINGS**:
