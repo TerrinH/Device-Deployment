@@ -26,11 +26,7 @@ Private Sub Worksheet_Activate()
         'Here we specifically set the active cell to the first empty cell in column 1 (A).
         ThisWorkbook.CompletedSheet.Range("A" & ThisWorkbook.CompletedSheet.UsedRange.Rows.Count).End(xlUp).Offset(1, 0).Select
     End If
-    CustomerColumn = ThisWorkbook.SheetColumnLookup("Customer", False, ThisWorkbook.CompletedSheet, False)
-    UnitSerialColumn = ThisWorkbook.SheetColumnLookup("Unit Serial", False, ThisWorkbook.CompletedSheet, False)
-    UnitModelColumn = ThisWorkbook.SheetColumnLookup("Model", False, ThisWorkbook.CompletedSheet, False)
-    LocationColumn = ThisWorkbook.SheetColumnLookup("Location", False, ThisWorkbook.CompletedSheet, False)
-    DateColumn = ThisWorkbook.SheetColumnLookup("Date", False, ThisWorkbook.CompletedSheet, False)
+    Call UpdateColumnIndexes
 
 End Sub
 
@@ -40,7 +36,9 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     'Here we loop through all the changed cells and handle them individually, even if there's only 1.
     Dim TargetCell As Range
     For Each TargetCell In Target.Cells
-        If TargetCell Is Nothing Or TargetCell.Row = 1 Then
+        If TargetCell Is Nothing Then Exit Sub
+        If TargetCell.Row = 1 Then
+            Call UpdateColumnIndexes
             Exit Sub
         End If
         'Here we force all input to be uppercase.
@@ -61,6 +59,18 @@ Private Sub Worksheet_Change(ByVal Target As Range)
         DoEvents
     Next
     
+End Sub
+
+Private Sub UpdateColumnIndexes()
+    'When called will search for and update all tracked column indexes.
+    
+    'Critical column lookups that fail will be reported.
+    CustomerColumn = ThisWorkbook.SheetColumnLookup("Customer", False, ThisWorkbook.CompletedSheet, True)
+    UnitSerialColumn = ThisWorkbook.SheetColumnLookup("Unit Serial", False, ThisWorkbook.CompletedSheet, False)
+    UnitModelColumn = ThisWorkbook.SheetColumnLookup("Model", False, ThisWorkbook.CompletedSheet, True)
+    LocationColumn = ThisWorkbook.SheetColumnLookup("Location", False, ThisWorkbook.CompletedSheet, True)
+    DateColumn = ThisWorkbook.SheetColumnLookup("Date", False, ThisWorkbook.CompletedSheet, True)
+
 End Sub
 
 Private Sub UnitSerialEvent(ByRef UnitSerialCell As Range)
