@@ -22,14 +22,12 @@ Private Sub Workbook_Open()
     Dim Sheet As Worksheet                  'This will be set to the worksheet within the loop.
     Dim CurrentUsers() As Variant           'This will be set to a list of users who have this workbook open NOT in Read-Only mode.
     
-    Application.ScreenUpdating = False
     For Each Sheet In ThisWorkbook.Worksheets
         'When we activate each sheet we are triggering the sheet's activation event (if it has one).
         Call UnhideAllColumns(Sheet)
         Call UnhideAllRows(Sheet)
         Sheet.Activate
     Next
-    Application.ScreenUpdating = True
 
     'This is required to ensure that the global worksheet variables are assigned correctly by ensuring each sheet's activation event fires.
     For Each Sheet In ThisWorkbook.Worksheets
@@ -87,17 +85,16 @@ Private Sub Workbook_AfterSave(ByVal Success As Boolean)
 End Sub
 
 Private Sub UnhideAllColumns(ByRef Sheet As Worksheet)
-    'When called will un-hide every column on every sheet.
+    'When called will un-hide every column on the referenced worksheet.
     
     Dim Col As Range        'This will be set to the column within the loop.
-    Dim UsedCells As Range  'This will contain all the rows and columns that are being used only.
     
-    Set UsedCells = Sheet.UsedRange
-    'Here we loop through every column in this sheet and un-hide (show) the column if hidden.
-    For Each Col In UsedCells.Columns
+    'We disable screen updating to improve execution time.
+    Application.ScreenUpdating = False
+    For Each Col In Sheet.UsedRange.Columns
         If Col.Hidden = True Then Col.Hidden = False
     Next
-    
+    Application.ScreenUpdating = True
     
 End Sub
 
@@ -105,13 +102,13 @@ Private Sub UnhideAllRows(ByRef Sheet As Worksheet)
     'When called will un-hide every row on every sheet.
     
     Dim Ro As Range         'This will be set to the row within the loop.
-    Dim UsedCells As Range  'This will contain all the rows and columns that are being used only.
     
-    Set UsedCells = Sheet.UsedRange
-    'Here we loop through every row in this sheet and un-hide (show) the row if hidden.
-    For Each Ro In UsedCells.Rows
+    'We disable screen updating to improve execution time.
+    Application.ScreenUpdating = False
+    For Each Ro In Sheet.UsedRange.Rows
         If Ro.Hidden = True Then Ro.Hidden = False
     Next
+    Application.ScreenUpdating = True
     
 End Sub
 
