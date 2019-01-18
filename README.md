@@ -7,7 +7,7 @@ significant amounts of inactive data (shipped devices).
 
 
 **HOW IT WORKS**:
-  The workbook has 5 worksheets; Master, Special Status, Completed, Shipped, and SETTINGS:
+  The workbook has six worksheets; Master, Special Status, Completed, Shipped, Serial Asset, and SETTINGS:
   
   - **Master**:
     This is the main worksheet where all the basic device info is entered initially along with the customer name and storage location.
@@ -28,6 +28,9 @@ significant amounts of inactive data (shipped devices).
   - **Shipped**:
     Once the preliminary quality control of the _Completed_ worksheet has been completed and the device is ready to be packaged in its
     shipping medium, it ends up here where we associate a shipping tracking number with the device.
+    
+  - **Serial Asset**:
+    If a device should have a unique asset ID associated with it we track that association here.
   
   - **SETTINGS**:
     The _SETTINGS_ worksheet is really just a placeholder for the data validation range I use in the _Special Status_ worksheet, and
