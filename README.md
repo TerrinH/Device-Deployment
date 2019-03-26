@@ -1,4 +1,4 @@
-# ongoing-deployment-master
+# Device-Deployment
 An Excel workbook with a code base I created to track the deployment stages of individual devices for different customers. The workbook 
 was designed to function as a template that is used to create working copies that are to be used before archiving at a desired time 
 interval. When archiving a working copy there is a subroutine within this workbook that allows it to pull only active data from another
